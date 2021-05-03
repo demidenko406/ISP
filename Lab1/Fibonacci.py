@@ -4,7 +4,7 @@ def fibonacci(n):
    else:
        return(fibonacci(n-1) + fibonacci(n-2))
 
-amount_of_numbers = int(input("How much of Fibonacci numbers do you want to get: "))
+amount_of_numbers = 7
 
 if amount_of_numbers > 0:
    for i in range(amount_of_numbers):

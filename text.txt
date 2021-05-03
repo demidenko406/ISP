@@ -1,0 +1,19 @@
+IMAGE          CREATED       CREATED BY                                      SIZE      COMMENT
+9b9126f2a963   11 days ago   /bin/sh -c #(nop)  CMD ["python3"]              0B        
+<missing>      11 days ago   /bin/sh -c set -ex;   wget -O get-pip.py "$P…   8.01MB    
+<missing>      11 days ago   /bin/sh -c #(nop)  ENV PYTHON_GET_PIP_SHA256…   0B        
+<missing>      11 days ago   /bin/sh -c #(nop)  ENV PYTHON_GET_PIP_URL=ht…   0B        
+<missing>      2 weeks ago   /bin/sh -c #(nop)  ENV PYTHON_PIP_VERSION=21…   0B        
+<missing>      2 weeks ago   /bin/sh -c cd /usr/local/bin  && ln -s idle3…   32B       
+<missing>      2 weeks ago   /bin/sh -c set -ex   && wget -O python.tar.x…   53.4MB    
+<missing>      2 weeks ago   /bin/sh -c #(nop)  ENV PYTHON_VERSION=3.8.8     0B        
+<missing>      3 weeks ago   /bin/sh -c #(nop)  ENV GPG_KEY=E3FF2839C048B…   0B        
+<missing>      3 weeks ago   /bin/sh -c apt-get update && apt-get install…   18MB      
+<missing>      3 weeks ago   /bin/sh -c #(nop)  ENV LANG=C.UTF-8             0B        
+<missing>      3 weeks ago   /bin/sh -c #(nop)  ENV PATH=/usr/local/bin:/…   0B        
+<missing>      3 weeks ago   /bin/sh -c set -ex;  apt-get update;  apt-ge…   510MB     
+<missing>      3 weeks ago   /bin/sh -c apt-get update && apt-get install…   146MB     
+<missing>      3 weeks ago   /bin/sh -c set -ex;  if ! command -v gpg > /…   17.5MB    
+<missing>      3 weeks ago   /bin/sh -c set -eux;  apt-get update;  apt-g…   16.5MB    
+<missing>      3 weeks ago   /bin/sh -c #(nop)  CMD ["bash"]                 0B        
+<missing>      3 weeks ago   /bin/sh -c #(nop) ADD file:8f75f11b2bd2d50e5…   114MB     

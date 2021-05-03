@@ -1,0 +1,6 @@
+__init__.py
+Lab2.ipynb
+__pycache__
+.idea
+.ipynb_checkpoints
+.vscode
