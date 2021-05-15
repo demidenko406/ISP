@@ -1,39 +1,32 @@
-from logic.dictmaker import *
-from yaml import dumps,loads
+from typing import Any, IO # pragma: no cover
+import yaml
+from Lab.logic.dictmaker import *
 
 class YamlParse:
-    base_dumps = dumps
-    base_loads = loads 
+    unpacker =  ToDict()
+    packer = FromDict()
 
-    def dump(self, obj: object, file: object = None, unpacked=True) -> None: 
-        if unpacked: 
-            packed_obj = ToDict().pack_to_dict(obj)
-        else: 
-            packed_obj = obj
+    def dump(self, obj: object, file: object = None) -> None: 
+        packed_obj = self.unpacker.pack_to_dict(obj)
         if file:
             with open(file, 'w') as file:
-                file.write(YamlParser.base_dumps(packed_obj))
+                file.write(self.dumps(obj))
         else: 
             raise ValueError("File transfer aborted")
 
     def dumps(self, obj: object) -> None: 
-        packed_obj = ToDict().pack_to_dict(obj)
-        return YamlParser.base_dumps(packed_obj)
+        packed_obj = self.unpacker.pack_to_dict(obj)
+        return yaml.dump(packed_obj)
 
-    def load(self, file: object, unpack=True) -> Any: 
+    def load(self, file: object) -> Any: 
         if file:
             with open(file, 'r') as file:
-                raw_obj = TomlParser.base_loads(file.read())
-            if unpack: 
-                unpacked_obj = FromDict().unpack_from_dict(raw_obj)
-                return unpacked_obj
-            else: 
-                return raw_obj
-
+                raw_obj = self.loads(file.read())
+            return raw_obj
         else:
             raise ValueError("File transfer aborted")
 
-    def loads(self, json: str) -> Any: 
-        raw_obj = TomlParser.base_loads(json)
-        unpacked_obj = FromDict().unpack_from_dict(raw_obj)
+    def loads(self, yam: str) -> Any: 
+        raw_obj = yaml.load(yam)
+        unpacked_obj = self.packer.unpack_from_dict(raw_obj)
         return unpacked_obj

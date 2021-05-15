@@ -1,40 +1,29 @@
-from logic.dictmaker import *
-from pickle import dumps,loads
+from typing import Any, IO
+import pickle
+from Lab.logic.dictmaker import *
 
 class PickleParse:
-    base_dumps = dumps
-    base_loads = loads 
+    unpacker = ToDict()
+    packer = FromDict()
 
-    def dump(self, obj: object, file: object = None, unpacked=True) -> None: 
-        if unpacked: 
-            unpacker =  ToDict()
-            packed_obj = unpacker.pack_to_dict(obj)
-        else: 
-            packed_obj = obj
+    def dump(self, obj: object, file: object = None) -> None: 
+        packed_obj = self.unpacker.pack_to_dict(obj)
         if file:
-            with open(file, 'w') as file:
-                file.write(PickleParser.base_dumps(packed_obj))
+            with open(file, 'wb') as file:
+                pickle.dump(packed_obj,file)
         else: 
             raise ValueError("File transfer aborted")
 
     def dumps(self, obj: object) -> None: 
-        packed_obj = ToDict().pack_to_dict(obj)
-        return PickleParser.base_dumps(packed_obj)
+        packed_obj = unpacker.pack_to_dict(obj)
+        return pickle.dumps(packed_obj)
 
     def load(self, file: object, unpack=True) -> Any: 
         if file:
-            with open(file, 'r') as file:
-                raw_obj = TomlParser.base_loads(file.read())
-            if unpack: 
-                unpacked_obj = FromDict().unpack_from_dict(raw_obj)
-                return unpacked_obj
-            else: 
-                return raw_obj
-
+            with open(file, 'rb') as file:
+                return self.packer.unpack_from_dict(pickle.load(file))
         else:
             raise ValueError("File transfer aborted")
 
-    def loads(self, json: str) -> Any: 
-        raw_obj = TomlParser.base_loads(json)
-        unpacked_obj = FromDict().unpack_from_dict(raw_obj)
-        return unpacked_obj
+    def loads(self, string: str) -> Any:  
+        return packer.unpack_from_dict(pickle.loads(string))

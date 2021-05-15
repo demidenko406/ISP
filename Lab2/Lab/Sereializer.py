@@ -1,5 +1,4 @@
-from Factory import SerializerFactory
-
+from Lab.Factory import SerializerFactory
 
 class Serializer:
     def __init__(self, default_form="json"):
@@ -12,19 +11,19 @@ class Serializer:
             self.form = new_form
             return True
 
-    def load(self, fp, unpack=True):
+    def load(self, fp):
         serializer = SerializerFactory.factory.get_serializer(self.form)
-        return serializer.load(fp, unpack)
+        return serializer.load(fp)
 
-    def loads(self, string):
+    def loads(self, string):# pragma: no cover
         serializer = SerializerFactory.factory.get_serializer(self.form)
         return serializer.loads(string)
 
-    def dump(self, obj, fp, unpacked=True):
+    def dump(self, obj, fp):
         serializer = SerializerFactory.factory.get_serializer(self.form)
-        serializer.dump(obj, fp, unpacked)
+        serializer.dump(obj, fp)
 
-    def dumps(self, obj):
+    def dumps(self, obj):# pragma: no cover
         serializer = SerializerFactory.factory.get_serializer(self.form)
         return serializer.dumps(obj)
 

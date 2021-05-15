@@ -48,7 +48,7 @@ def globals_parse(passed_function):
         elif isinstance(func_vars[0][x],types.ModuleType):
             func_vars[0][x] = {"decomposed": func_vars[0][x].__name__,'type' : "module"}
         else:
-            func_vars[0][x] = {"decomposed": func_vars[0][x],'type' : "primitive"}
+            func_vars[0][x] = {"decomposed": x,'type' : "primitive"}
     builtin_parse(func_vars[1])
     _globals = {}
     _globals.update(builtin_parse(func_vars[1]))
@@ -119,16 +119,6 @@ def dict_to_code(_dict):
 
 def dict_to_func(_dict):
     globals = read_globals(_dict['globals'])
-    func = [_dict_to_code(_dict["code"]),globals,_dict["name"],_dict["defaults"]]
+    func = [dict_to_code(_dict["code"]),globals,_dict["name"],_dict["defaults"]]
     return types.FunctionType(*func)
-
-def New():
-    dir(builtins)
-
-def sec_new():
-    print(x)
-    New()
-    dir(builtins)
-    print("Hello World")
-x = 10
 

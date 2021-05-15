@@ -7,16 +7,6 @@ primitives = set(
         bool,
         str
     ])
-    
-def is_basetype(obj: object) -> bool:
-    for el in primitives:
-        if el.__name__ == obj.__name__:
-            return True
-    if el in [dict, list, tuple, set]:
-        if el.__name__ == obj.__name__:
-            return True
-    return False
-
 
 def is_none(_obj):
     return _obj is None
@@ -26,10 +16,10 @@ def is_primitive(obj: object) -> bool:
 
 def is_instance_of(obj):
     if not hasattr(obj, '__dict__'):
-        return False
-    if inspect.isroutine(obj):
-        return False
-    if inspect.isclass(obj):
-        return False
+        return False# pragma: no cover
+    if inspect.isroutine(obj):# pragma: no cover
+        return False# pragma: no cover
+    if inspect.isclass(obj):# pragma: no cover
+        return False# pragma: no cover
     else:
         return True

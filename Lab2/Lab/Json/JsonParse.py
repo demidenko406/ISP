@@ -1,44 +1,36 @@
-from io import FileIO # pragma: no cover
-from typing import Any, IO # pragma: no cover
-from json import dumps, loads # pragma: no cover
-
-from logic.dictmaker import *
-
+from io import FileIO 
+from typing import Any, IO
+from Lab.Json import json_parse as json_
+from Lab.logic.dictmaker import *
 
 
-class JsonParser:  # pragma: no cover
-    base_dumps = dumps
-    base_loads = loads
+
+class JsonParser:
+    unpacker = ToDict()
+    packer = FromDict()
 
     def dump(self, obj: object, file: object = None, unpacked=True) -> None: 
-        if unpacked: 
-            packed_obj = ToDict().pack_to_dict(obj)
-        else: 
-            packed_obj = obj
+        packed_obj = self.unpacker.pack_to_dict(obj)
         if file:
             with open(file, 'w') as file:
-                file.write(JsonParser.base_dumps(packed_obj))
+                json_.dump(packed_obj,file)
         else: 
             raise ValueError("File transfer aborted")
 
-    def dumps(self, obj: object) -> None: 
-        packed_obj = ToDict().pack_to_dict(obj)
-        return JsonParser.base_dumps(packed_obj)
+    def dumps(self, obj: object) -> None:# pragma: no cover 
+        packed_obj = self.unpacker.pack_to_dict(obj)
+        return json_.dumps(packed_obj)
 
     def load(self, file: object, unpack=True) -> Any: 
         if file:
             with open(file, 'r') as file:
-                raw_obj = JsonParser.base_loads(file.read())
-            if unpack: 
-                unpacked_obj = FromDict().unpack_from_dict(raw_obj)
-                return unpacked_obj
-            else: # pragma: no cover
-                return raw_obj
-
-        else: # pragma: no cover
+                raw_obj = json_.load(file)
+            unpacked_obj = FromDict().unpack_from_dict(raw_obj)
+            return unpacked_obj
+        else:
             raise ValueError("File transfer aborted")
 
-    def loads(self, json: str) -> Any: 
-        raw_obj = JsonParser.base_loads(json)
+    def loads(self, str: str) -> Any: # pragma: no cover
+        raw_obj = json_.loads(str)
         unpacked_obj = FromDict().unpack_from_dict(raw_obj)
         return unpacked_obj
