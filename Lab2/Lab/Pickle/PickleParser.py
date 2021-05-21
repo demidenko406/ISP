@@ -15,7 +15,7 @@ class PickleParse:
             raise ValueError("File transfer aborted")
 
     def dumps(self, obj: object) -> None: 
-        packed_obj = unpacker.pack_to_dict(obj)
+        packed_obj = self.unpacker.pack_to_dict(obj)
         return pickle.dumps(packed_obj)
 
     def load(self, file: object, unpack=True) -> Any: 
@@ -26,4 +26,4 @@ class PickleParse:
             raise ValueError("File transfer aborted")
 
     def loads(self, string: str) -> Any:  
-        return packer.unpack_from_dict(pickle.loads(string))
+        return self.packer.unpack_from_dict(pickle.loads(string))

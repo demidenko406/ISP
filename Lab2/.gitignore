@@ -5,3 +5,6 @@ Lab.egg*
 Tests*
 build*
 env*
+dist
+CLASSES
+source

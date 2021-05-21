@@ -36,10 +36,6 @@ class ToDict():
                 _dict['_type'] = 'list'
             return result
 
-        elif isinstance(attr,types.MappingProxyType):
-            _dict["_type"] = '__dict__'
-            return _dict['attrs']
-
         elif isinstance(attr,type):
             _mro = {}
             bases = []
@@ -55,6 +51,7 @@ class ToDict():
         elif is_instance_of(attr):
             _dict['_type'] = 'instance'
             return self.pack_to_dict(attr.__class__)
+
         else:
             return None
 
@@ -62,11 +59,6 @@ class ToDict():
         for attribute in list(_object.__dict__.keys()):
             attrs_dict['attrs'][attribute] = None
         for lower_attribute in attrs_dict['attrs'].keys():
-            if(lower_attribute == "__dict__"):
-                attrs_dict['attrs'][lower_attribute] = {'attrs': {}, 'decomposed': None,'_type': None}    
-                continue
-            if(lower_attribute == "mro"):
-                continue
             attr = getattr(_object, lower_attribute)
             attrs_dict['attrs'][lower_attribute] = {'attrs': {}, 'decomposed': None,'_type': None}
             if hasattr(attr, "__dict__"):
@@ -104,6 +96,11 @@ class FromDict():
             
         elif(_dictionary['_type'] == 'dict'):
             return _dictionary['decomposed']
+        
+        elif(_dictionary['_type'] == 'set'):
+            set_obj = set()
+            set_obj = {i for i in _dictionary['decomposed']}
+            return set_obj
 
         elif(_dictionary['_type'] == 'func'):
             func = functions.dict_to_func(_dictionary['decomposed'])

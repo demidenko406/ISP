@@ -26,10 +26,15 @@ class Bottom(Middle_One,Middle_Two):
 bottom_instance = Bottom("Hello")
 
 def Triangle(x,y,z):
-    print(x+y+z)
+    print("Called")
+    return( x + y + z)
 
 list_example = [["Hello","Try","Ex"],"draw","triangle"]
 
 dict_example = {"Hy":"Hello","Number":13}
 
 lam = lambda x: x + 1
+
+set_example = set()
+set_example = {1,2,3,4,5,6,7,8,9,10,11}
+print(type(set_example))

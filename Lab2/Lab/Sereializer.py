@@ -15,7 +15,7 @@ class Serializer:
         serializer = SerializerFactory.factory.get_serializer(self.form)
         return serializer.load(fp)
 
-    def loads(self, string):# pragma: no cover
+    def loads(self, string):
         serializer = SerializerFactory.factory.get_serializer(self.form)
         return serializer.loads(string)
 
@@ -23,7 +23,7 @@ class Serializer:
         serializer = SerializerFactory.factory.get_serializer(self.form)
         serializer.dump(obj, fp)
 
-    def dumps(self, obj):# pragma: no cover
+    def dumps(self, obj):
         serializer = SerializerFactory.factory.get_serializer(self.form)
         return serializer.dumps(obj)
 

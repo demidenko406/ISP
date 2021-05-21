@@ -30,7 +30,7 @@ class JsonParser:
         else:
             raise ValueError("File transfer aborted")
 
-    def loads(self, str: str) -> Any: # pragma: no cover
+    def loads(self, str: str) -> Any: 
         raw_obj = json_.loads(str)
         unpacked_obj = FromDict().unpack_from_dict(raw_obj)
         return unpacked_obj

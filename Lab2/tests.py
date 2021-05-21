@@ -1,17 +1,10 @@
 import unittest
-from Test_objects import Bottom,bottom_instance,Triangle,list_example,dict_example,lam
-from Lab.Json.JsonParse import JsonParser
-from Lab.Yaml import YamlParser
-from Lab.Pickle import PickleParser
+from Test_objects import Bottom,bottom_instance,Triangle,list_example,dict_example,lam,set_example
 from Lab.Sereializer import Serializer
 
 
 class TestParsers(unittest.TestCase):
     def setUp(self):
-
-        #self.yaml_parser = YamlParser()
-        #self.json_parser = JsonParser()
-        #self.pickle_parser = PickleParser()
         self.json_parser = Serializer("json")
         self.yaml_parser = Serializer("yaml")
         self.pickle_parser = Serializer("pickle")
@@ -117,6 +110,42 @@ class TestParsers(unittest.TestCase):
         self.yaml_parser.dump(bottom_instance, './Tests/bottom_inst.yaml')
         obj_to_compare = self.yaml_parser.load('./Tests/bottom_inst.yaml')
         self.assertEqual(obj_to_compare.value,bottom_instance.value)
+
+    def test_json_inst_dumps_loads(self):
+        parsed_str = self.json_parser.dumps(bottom_instance)
+        obj_to_compare = self.json_parser.loads(parsed_str)
+        self.assertEqual(obj_to_compare.value,bottom_instance.value)
+
+    def test_pickle_inst_dumps_loads(self):
+        parsed_str =  self.pickle_parser.dumps(bottom_instance)
+        obj_to_compare = self.pickle_parser.loads(parsed_str)
+        self.assertEqual(obj_to_compare.value,bottom_instance.value)
+
+    def test_yaml_inst_dumps_loads(self):
+        parsed_str = self.yaml_parser.dumps(bottom_instance)
+        obj_to_compare = self.yaml_parser.loads(parsed_str)
+        self.assertEqual(obj_to_compare.value,bottom_instance.value)
+    
+    def test_change_form(self):
+        self.yaml_parser.change_form("json")
+        self.json_parser.change_form("json")
+        self.assertEqual(self.yaml_parser.form,"json")
+
+    def test_json_set_dump_load(self):
+        self.json_parser.dump(set_example, './Tests/set_example.json')
+        obj_to_compare = self.json_parser.load('./Tests/set_example.json')
+        self.assertEqual(obj_to_compare, set_example)
+
+    def test_pickle_set_dump_load(self):
+        self.pickle_parser.dump(set_example, './Tests/set_example.pickle')
+        obj_to_compare = self.pickle_parser.load('./Tests/set_example.pickle')
+        self.assertEqual(obj_to_compare, set_example)
+
+    def test_yaml_set_dump_load(self):
+        self.json_parser.dump(set_example, './Tests/set_example.yaml')
+        obj_to_compare = self.yaml_parser.load('./Tests/set_example.yaml')
+        self.assertEqual(obj_to_compare, set_example)
+    
 
 if __name__ == "__main__":
     unittest.main()

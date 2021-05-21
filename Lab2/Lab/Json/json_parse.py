@@ -1,8 +1,8 @@
 def dumps(obj:object):
-    return encode(obj)
+    return pack(obj)
 
 def dump(obj:object, fp=""):
-    tokens = encode(obj)
+    tokens = pack(obj)
     fp.write(tokens)
 
 def loads(string:str):
@@ -12,7 +12,7 @@ def load(fp=""):
     buffer = fp.read()
     return decode(buffer)
 
-def encode(obj:object):
+def pack(obj:object):
     tokens = []
     if(isinstance(obj, dict)):
         tokens.append('{')
@@ -26,9 +26,9 @@ def encode(obj:object):
             if not isinstance(key, str):
                 raise KeyError('Key must be a string')
             else:
-                tokens.append(encode(key))
+                tokens.append(pack(key))
                 tokens.append(': ')
-                tokens.append(encode(value))
+                tokens.append(pack(value))
                 if(obj.keys()):
                     tokens.append(', ')
         tokens.append('}')
@@ -37,17 +37,17 @@ def encode(obj:object):
         obj.reverse()
         while(obj):
             value = obj.pop()
-            tokens.append(encode(value))
+            tokens.append(pack(value))
             if(obj):
                 tokens.append(', ')
         tokens.append(']')
-    if(isinstance(obj, tuple)):
+    if(isinstance(obj, tuple) or isinstance(obj,set)):
         obj2 = [i for i in obj]
         tokens.append('[')
         obj2.reverse()
         while(obj2):
             value = obj2.pop()
-            tokens.append(encode(value))
+            tokens.append(pack(value))
             if(obj2):
                 tokens.append(', ')
         tokens.append(']')
@@ -68,9 +68,9 @@ def encode(obj:object):
 
 
 def decode(string:str):
-    return detoken(string)[0]
+    return unpack(string)[0]
 
-def detoken(string : str):
+def unpack(string : str):
     ptr = 0
     while ptr < len(string):
         if string[ptr] == ' ' or string[ptr] == '\n':
@@ -78,27 +78,27 @@ def detoken(string : str):
             continue
         if string[ptr] == '{':
             ptr += 1
-            result = detoken_dict(string[ptr : ])
+            result = unpack_dict(string[ptr : ])
             ptr += result[1]
             return result[0], ptr
         if string[ptr] == '[':
             ptr += 1
-            result = detoken_list(string[ptr : ])
+            result = unpack_list(string[ptr : ])
             ptr += result[1]
             return result[0], ptr
         if string[ptr] == '"':
             ptr += 1
-            result = detoken_str(string[ptr : ])
+            result = unpack_str(string[ptr : ])
             ptr += result[1]
             return result[0], ptr
         if not ptr == len(string) - 1:
             if string[ptr] == '-' and string[ptr + 1].isnumeric():
-                ptr += 1# pragma: no cover
-                result = detoken_nums(string[ptr : ])# pragma: no cover
-                ptr += result[1]# pragma: no cover
-                return -1 * result[0], ptr# pragma: no cover
+                ptr += 1   
+                result = parse_nums(string[ptr : ])   
+                ptr += result[1]   
+                return -1 * result[0], ptr   
         if string[ptr].isnumeric():
-            result = detoken_nums(string[ptr : ])
+            result = parse_nums(string[ptr : ])
             ptr += result[1]
             return result[0], ptr
         if string[ptr : ptr + 5] == 'false':
@@ -113,27 +113,27 @@ def detoken(string : str):
         ptr += 1
     return None, ptr
 
-def detoken_dict(string : str):
+def unpack_dict(string : str):
     obj = {}
     ptr = 0
     while ptr < len(string):
         char = string[ptr]
         if string[ptr] == ' ' or string[ptr] == '\n':
-            ptr += 1# pragma: no cover
-            continue# pragma: no cover
+            ptr += 1   
+            continue   
         if string[ptr] == '}':
             ptr += 1
             break
-        result = detoken(string[ptr : ])
+        result = unpack(string[ptr : ])
         key = result[0]
-        ptr += result[1]# pragma: no cover
-        ptr = string.find(':', ptr) + 1# pragma: no cover
-        result = detoken(string[ptr : ])# pragma: no cover
-        obj[key] = result[0]# pragma: no cover
+        ptr += result[1]   
+        ptr = string.find(':', ptr) + 1   
+        result = unpack(string[ptr : ])   
+        obj[key] = result[0]   
         ptr += result[1]
     return obj, ptr
 
-def detoken_list(string : str):
+def unpack_list(string : str):
     obj = []
     ptr = 0
     while ptr < len(string):
@@ -143,12 +143,12 @@ def detoken_list(string : str):
         if string[ptr] == ']':
             ptr += 1
             break
-        result = detoken(string[ptr : ])
+        result = unpack(string[ptr : ])
         obj.append(result[0])
         ptr += result[1]
     return obj, ptr
 
-def detoken_str(string : str):
+def unpack_str(string : str):
     obj = ""
     ptr = 0
     while ptr < len(string):
@@ -159,16 +159,16 @@ def detoken_str(string : str):
         ptr += 1
     return obj, ptr
 
-def detoken_nums(string : str):
+def parse_nums(string : str):
     obj = ""
     ptr = 0
     num_type = int
     while ptr < len(string):
         if not ptr == len(string) - 1:
             if string[ptr] == '.' and string[ptr + 1].isnumeric():
-                num_type = float# pragma: no cover
-                obj += string[ptr]# pragma: no cover
-                ptr += 1# pragma: no cover
+                num_type = float   
+                obj += string[ptr]   
+                ptr += 1   
                 continue
         if not string[ptr].isnumeric():
             break

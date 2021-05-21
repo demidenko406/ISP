@@ -34,7 +34,6 @@ def get_vars(func):
     return (global_vars,builtin_vars,nonlocal_vars)
 
 def builtin_parse(builtins_dict):
-
     for x in builtins_dict.keys():
         if isinstance(builtins_dict[x],types.BuiltinFunctionType):
             builtins_dict[x] = {"decomposed":x,'type' : 'builtin'}
